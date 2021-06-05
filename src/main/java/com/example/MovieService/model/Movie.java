@@ -1,16 +1,37 @@
 package com.example.MovieService.model;
 
+import javax.persistence.*;
+import java.util.Objects;
+
+@Entity
 public class Movie {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private  Category category;
+    @Enumerated(EnumType.STRING)
+    private Category category;
     private int rating;
+    private boolean isAvailable;
 
     public Movie(Long id, String name, Category category, int rating) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.rating = rating;
+    }
+
+    public Movie(Long id, String name, Category category, int rating, boolean isAvailable) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.rating = rating;
+        this.isAvailable = isAvailable;
+    }
+
+    public Movie() {
+
     }
 
     public Long getId() {
@@ -45,6 +66,14 @@ public class Movie {
         this.rating = rating;
     }
 
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        this.isAvailable = available;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +
@@ -52,6 +81,24 @@ public class Movie {
                 ", name='" + name + '\'' +
                 ", category=" + category +
                 ", rating=" + rating +
+                ", isAvailable=" + isAvailable +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, category, rating, isAvailable);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Movie movie = (Movie) object;
+        return isAvailable == movie.isAvailable
+                && Objects.equals(id, movie.id)
+                && Objects.equals(name, movie.name)
+                && category == movie.category
+                && Objects.equals(rating, movie.rating);
     }
 }
